@@ -32,7 +32,7 @@ function App() {
 
   const resetCount = () => {
     setCount(0);
-    localStorage.removeitem("savedCount");
+    localStorage.removeItem("savedCount");
   }
 
   return (
