@@ -10,11 +10,10 @@ function Image() {
 function App() {
   useEffect(() => {
     const rootElement = document.getElementById("root");
-    const element = document.createElement("div");
-    const elementtwo = document.createElement("h3")
-    element.textContent = "Hey, I'm a div!";
-    element.className = "Container";
-    elementtwo.textContent = "I know that looks weird, buut, i actually understand something about how jsx works, and that html-familiar syntax"
+    const element = document.createElement("div")
+    const elementtwo = document.createElement("h3");
+    element.textContent = "Something in the div"
+    elementtwo.textContent = "I know that looks weird, buut, i actually understand something about how jsx works, and that html-familiar syntax";
     rootElement.appendChild(element);
     rootElement.appendChild(elementtwo);
   }, []);
@@ -24,7 +23,27 @@ function App() {
   return saved !== null ? Number(saved) : 0;
 });
 
-  
+  function MyComponent(props) {
+  return (
+    <div>
+      {props.isLoggedIn ? (
+        <p>Welcome, user!</p>
+      ) : (
+        <p>Please log in.</p>
+      )}
+    </div>
+  );
+}
+
+function UserStatus ({ isLoggedIn }) {
+  return (
+    <div>
+      {isLoggedIn ? <h2>Welcome</h2> : <h2>Login</h2>}
+    </div>
+  )
+}
+
+ 
 
   const saveCount = () => {
     localStorage.setItem("savedCount", count)
@@ -35,16 +54,24 @@ function App() {
     localStorage.removeItem("savedCount");
   }
 
+  const name = "alice";
+
+
   return (
     <div>
       <h1>My first component in React!</h1>
+      <MyComponent isLoggedIn={true} />
+      <UserStatus isLoggedIn={true} />
       <p>Hello, world!</p>
+      <p>Hello, {name}</p>
       <button onClick={() => setCount(count + 1)} >There are even a counter {count}</button>
       <button onClick={saveCount}>Save count</button>
       <button onClick={resetCount}>Reset count</button>
+      
       <Image />
       <Image />
     </div>
+    
   );
 }
 
