@@ -1,33 +1,39 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect, useRef, createContext, useContext } from 'react'
 
 function App() {
   const [count, setCount] = useState(0)
+  const [seconds, setSeconds] = useState(0)
+  const inputRef = useRef();
+  const ThemeContext = createContext("light");
+  
+
+  useEffect(() => {
+    const interval = setInterval(() => setSeconds(s => s + 1), 1000);
+
+    return () => clearInterval(interval); // cleanup
+  }, []);
+
+  function Child() {
+    const theme = useContext(ThemeContext);
+    return <h1>Theme: {theme}</h1>;
+  }   
+
+  
 
   return (
     <>
       <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+       <h1>Count: {count}</h1>
+       <button onClick={() => setCount(count + 1)}>Increase</button>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <h1>
+        Timer: {seconds}
+      </h1>
+      <input ref={inputRef} placeholder="Type here..." />
+      <button onClick={() => inputRef.current.focus()}>Focus Input</button>
+      <ThemeContext.Provider value="dark">
+      <Child />
+     </ThemeContext.Provider>
     </>
   )
 }
