@@ -66,7 +66,7 @@ function App() {
       <input
        type="number"
        value={number}
-       onChange={e => setNumber(number(e.target.value))}
+       onChange={e => setNumber(Number(e.target.value))}
       />
       <p>Result = {result}</p>
       </div>
