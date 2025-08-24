@@ -1,12 +1,19 @@
-import { useState, useEffect, useRef, createContext, useContext, useReducer } from 'react'
+import { useState, useEffect, useRef, createContext, useContext, useReducer, useCallback, useMemo } from 'react'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(1)
   const [seconds, setSeconds] = useState(0)
   const inputRef = useRef();
   const ThemeContext = createContext("light");
   const initialState = { count: 0 };
   const [state, dispatch] = useReducer (reducer, initialState)
+  const [number, setNumber] = useState(3)   // change number in useState(that one) for smt else, 
+                                            // it would calculate number in square
+
+  function bigCalc(n) {
+    console.log("Calculating...")
+    return n*n;
+  }
 
   
 
@@ -37,7 +44,11 @@ function App() {
     }
   }
 
+ const increment = useCallback(() => {
+    setCount(c => c * 2);
+  }, []);
 
+  const result = useMemo(() => bigCalc(number), [number] )
 
   return (
     <>
@@ -46,6 +57,18 @@ function App() {
        <button onClick={() => dispatch({type: "INCREMENT"})}>Increase</button>
        <button onClick={() => dispatch({type: "DECREMENT"})}>Decrease</button>
        <button onClick={() => dispatch({type: "RESET"})}>Reset</button>
+      </div>
+      <div>
+        <p>Count: {count} (useCallback example)</p>
+        <button onClick={increment}>Increment by 2</button>
+      </div>
+      <div>
+      <input
+       type="number"
+       value={number}
+       onChange={e => setNumber(number(e.target.value))}
+      />
+      <p>Result = {result}</p>
       </div>
       <h1>
         Timer: {seconds}
