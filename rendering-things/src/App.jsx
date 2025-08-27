@@ -31,27 +31,54 @@ function Rendering() {
   divRef.current.focus();
  }
 
+ function Comp({ name }) {
+   return <h2>Hello, {name}, this is a HOC test.</h2>
+ }
+
+ function CompOverride(WrappedComponent) {
+   return function(props) {
+    const newProps = {...props, name: "Overridden"}
+    return <WrappedComponent {...newProps} />
+   }
+ }
+
+ const CompOverrideText = CompOverride(Comp)
+
   return ( 
   <>
+{/* Lists and keys */}
     <h1>Time: {count}</h1>; 
     <ul>
       {users.map(user => (
         <p key={user.id}>{user.name}, {user.id}</p>
       ))}
     </ul>
+{/* Render props */}
     <div style={{ height: "200px", border: "1px solid black" }}
          onMouseMove={handleMouseMove}>
       <p>Mouse position: {pos.x}, {pos.y}</p>
     </div>
+{/* Refs */}
     <div>
       <div ref={divRef}>
        Something in div...
-      </div>
-       <button onClick={handleClick}>Change and focus</button>
     </div>
+      <button onClick={handleClick}>Change and focus</button>
+    </div>
+{/* Events */}
+    <input 
+      placeholder="Print, check console => f12" 
+      type="text" 
+      onChange={() => console.log("Something changed here...")}
+      onFocus={() => console.log("Focus!")} 
+      onBlur={() => console.log("Lost focus.")} 
+    />
+{/* HOC => (High Order Components) */}
+   <Comp name="Alice" />
+   <CompOverrideText name="Bob" />
  </>
+
   )
-  
   
 }
 
