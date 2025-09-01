@@ -9,11 +9,28 @@ function Rendering() {
   ];
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const divRef = useRef(null);
+  const firstname = useInput("David", "first name");
+  const lastname = useInput("Doakes", "last name");
+
+
+function useInput(InitialValue, placeholder) {
+  const [value, setValue] = useState(InitialValue)
+
+    function handlechange(e) {
+      setValue(e.target.value);
+    }
+
+  return  {
+    value,
+    onChange: handlechange,
+    placeholder: `Type ${placeholder} here.`
+  }
+}
 
 
   useEffect(() => {
     console.log("Starting timer.");
-    const interval = setInterval(() => setCount(c => c + 1), 2000);
+    const interval = setInterval(() => setCount(arbuzposkidke => arbuzposkidke + 1), 2000);
 
     return () => {
       console.log("Clearing timer.");
@@ -76,8 +93,21 @@ function Rendering() {
 {/* HOC => (High Order Components) */}
    <Comp name="Alice" />
    <CompOverrideText name="Bob" />
+{/* Custom Hook -s */}
+   <label>
+    First name:  
+    <input
+     {...firstname}
+     />
+   </label>
+   <label>
+    Last name:  
+    <input
+    {...lastname}
+     />
+   </label>
+ <p>Good morning, {firstname.value || "First name" } {lastname.value || "First name"}</p>
  </>
-
   )
   
 }
