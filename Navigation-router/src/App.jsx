@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider, Outlet, Link  } from "react-router
 import App0 from "./myOtherProjects/App0";
 import App1 from "./myOtherProjects/App1";
 import App2 from "./myOtherProjects/App2";
+import App3 from "./myOtherProjects/App3";
 
 function Layout() {
   return (
@@ -14,7 +15,8 @@ function Layout() {
           <Link to="/">Home</Link> |{" "}
           <Link to="/App0">App1</Link> |{" "}
           <Link to="/App1">App2</Link> |{" "}
-          <Link to="/App2">App3</Link>
+          <Link to="/App2">App3</Link> |{" "}
+          <Link to="/App3">App4</Link>
         </nav>
         </div>
       </header>
@@ -37,6 +39,7 @@ const router = createBrowserRouter([
       { path: "/App0", element: <App0 /> },
       { path: "/App1", element: <App1 /> },
       { path: "/App2", element: <App2 /> },
+      { path: "/App3", element: <App3 /> },
     ],
   },
 ]);
