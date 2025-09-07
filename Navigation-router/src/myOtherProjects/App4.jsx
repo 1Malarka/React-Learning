@@ -1,47 +1,25 @@
 import { useState } from "react";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { createTodo } from "./Components";    // this one also
+import { createCounter } from "./Components"; // importing states that being used in functions
 
 const useStore = create(
-  persist(
-       (set) => ({
-     count: 0,
-     increase: () => set((state) => ({ count: state.count + 1 })),
-     decrease: () => set((state) => ({ count: state.count - 1 })),
-     reset: () => set(() => ({ count: 0 })),
-    //  todos below
-    todos: [],
-    filter: "All",
-    setFilter: (f) => set({filter: f}),  // filter (omg)
-    theme: "light",   // theme (fr ong???)
-    toggleTheme: () =>
-      set((state) => ({
-      theme: state.theme === "light" ? "dark" : "light"
-    })),
-
-
-    addTodo: (text) => 
-      set((state) => ({
-        todos: [...state.todos, {id: Date.now(), text, completed: false}]
-      })),
-    removeTodo: (id) =>
-      set((state) => ({
-        todos: state.todos.filter((t) => t.id !== id)
-      })),
-    toggleTodo: (id) =>
-      set((state) => ({
-        todos: state.todos.map((t) =>
-        t.id === id ? { ...t, completed: !t.completed } : t
-      ),
-    })),
-  }),
+  persist(    // this one is middleware, bro bcs his role is saving everything in localStorage
+       (set, get) => ({
+      ...createCounter(set, get),   //connecting them to useStore so it would work
+      ...createTodo(set, get),
+  }), 
   {
-      name: "app-storage"
+      name: "app-storage"      // Name of folder or smt, that stores each state from components.js inside it 
     }
 ));
 
 function StateManagment() {
- 
+//every function wrapped inside stateManagment (also it works as a main function that being rendered)
+// and as a main, everything inside also being rendered (idk for who i typing this, bcs this is basics of react)
+
+// counter
 function Counter() {
   const count = useStore((state) => state.count)
   const increase = useStore((state) => state.increase)
@@ -65,7 +43,9 @@ function Counter() {
     </div>
   )
 }
+// end of counter
 
+// to-do list
 function TodoList() {
   const todos = useStore((state) => state.todos)
   const addTodo = useStore((state) => state.addTodo)
@@ -81,6 +61,8 @@ function TodoList() {
     return true;
   })
 
+// IN to-do list i made filter
+
   function AddFilter() {
     if (text.trim() ===  "") {
       return;
@@ -89,10 +71,11 @@ function TodoList() {
     setText("");
     }
   }
-  
+// End of to-do list FILTER
 
   return (
     <div>
+      {/* To-do list */}
       <ul>
         {filteredTodos.map((t) => (
           <li key={t.id}>
@@ -108,17 +91,20 @@ function TodoList() {
       </ul>
       <button onClick={AddFilter} >Add to-do task</button>
       <input type="text" placeholder="Type your task here." onChange={(e) => setText(e.target.value)}  />
+      {/* end of to-do list */}
+      {/* this one is for filter */}
       <h3>there's also a filter</h3>
       <div>
         <button onClick={() => setFilter("All")}>All</button>
         <button onClick={() => setFilter("Undo")}>Undo</button>
         <button onClick={() => setFilter("Complete")}>Complete</button>
       </div>
+      {/* end of filter */}
     </div>
   )
 }
 
-
+// end of to-do list
 
  return (
 <div>
