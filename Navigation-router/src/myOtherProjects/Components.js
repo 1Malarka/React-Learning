@@ -24,3 +24,24 @@ export const createCounter = (set) => ({
      decrease: () => set((state) => ({ count: state.count - 1 })),
      reset: () => set(() => ({ count: 0 })),
 })
+
+export const jokeCreater = (set, get) => ({
+    loading: false,
+    error: null,
+    data: null,
+    
+    fetch: async () => {
+      set({ loading: true, error: null });
+      try {
+        const res = await fetch("https://v2.jokeapi.dev/joke/Any");
+        const data = await res.json();
+        set({
+          loading: false,
+          error: null,
+          data: data,
+        });
+      } catch (err) {
+        set({ loading: false, error: "failed to fetch data" })
+      }
+    }
+})

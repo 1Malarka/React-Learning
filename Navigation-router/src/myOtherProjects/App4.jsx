@@ -1,14 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { createTodo } from "./Components";    // this one also
+import { createTodo, jokeCreater } from "./Components";    // this one also
 import { createCounter } from "./Components"; // importing states that being used in functions
+import { shallow } from "zustand/shallow"
 
 const useStore = create(
   persist(    // this one is middleware, bro bcs his role is saving everything in localStorage
        (set, get) => ({
       ...createCounter(set, get),   //connecting them to useStore so it would work
       ...createTodo(set, get),
+      ...jokeCreater(set, get),
+      
   }), 
   {
       name: "app-storage"      // Name of folder or smt, that stores each state from components.js inside it 
@@ -106,6 +109,34 @@ function TodoList() {
 
 // end of to-do list
 
+function JokeCreator() {
+  const loading = useStore((s) => s.loading);
+  const error = useStore((s) => s.error);
+  const fetch = useStore((s) => s.fetch);
+  const data = useStore((s) => s.data);
+  console.log(data)
+  shallow
+ 
+  
+
+
+  return (
+    <div>
+        <div>
+        {loading && <p>Loading joke...</p>}
+        {error && <p>{error}</p>}
+        {data && (
+      <div>
+        <p>{data.setup}</p>
+        <p><b>{data.delivery}</b></p>
+      </div>
+      )}
+        </div>
+        <button onClick={fetch}>Generate joke</button>
+    </div>
+  )
+}
+
  return (
 <div>
   <div>
@@ -116,6 +147,7 @@ function TodoList() {
   <div>
     <TodoList />
     <p>Originally i made Theme function for only this page, buuut i though making it for every page (global) would be better</p>
+    <JokeCreator />
   </div>
 </div>
  )
