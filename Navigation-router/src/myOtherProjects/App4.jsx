@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { createTodo, jokeCreater } from "./Components";    // this one also
